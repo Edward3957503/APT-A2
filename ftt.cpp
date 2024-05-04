@@ -23,7 +23,9 @@ void loadFoodData(const char* filename, LinkedList& itemList);
 int main(int argc, char **argv) {
     int option;
     LinkedList itemList;
+    CoinCollection coinsList;
     loadFoodData(argv[1], itemList);
+    coinsList.loadCoinData(argv[2]);
 
     do {
         displayMainMenu();

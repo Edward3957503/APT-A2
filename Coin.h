@@ -3,6 +3,8 @@
 
 // Coin.h defines the coin structure for managing currency in the system. 
 #define DELIM ","  // delimiter 
+#include <vector>
+#include <string>
 
 // enumeration representing the various types of currency available in the system. 
 enum Denomination
@@ -22,6 +24,15 @@ public:
     
     // the count of how many of these are in the cash register
     unsigned count;
+
+    Coin(Denomination denom, unsigned count);
 };
 
+
+class CoinCollection {
+public:
+    std::vector<Coin> coins;
+
+    void loadCoinData(const std::string& filename);
+};
 #endif // COIN_H
