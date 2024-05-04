@@ -10,6 +10,7 @@ public:
     ~LinkedList();
 
     // more functions to be added perhaps...
+    void addFoodItem(const FoodItem& item);
 
 private:
     // the beginning of the list
