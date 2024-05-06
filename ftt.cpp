@@ -33,7 +33,6 @@ int main(int argc, char **argv) {
         processOption(option, itemList, coinsList);
     } while (option != 7);
 
-    return EXIT_SUCCESS;
 }
 
 void displayMainMenu() {
@@ -77,15 +76,15 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
     }
 }
 
-void loadFoodData(const char* filename, LinkedList& itemList){
+void loadFoodData(const char* filename, LinkedList& itemList) {
     std::ifstream file(filename);
-    if (!file) {
-        std::cerr << "Failed to open " << filename << std::endl;
-        return;
-    }
+    bool fileOpenedSuccessfully = file.is_open();
     std::string line;
 
-    while (std::getline(file, line)) {
+    if (!fileOpenedSuccessfully) {
+        std::cerr << "Failed to open " << filename << std::endl;
+    } else {
+        while (std::getline(file, line)) {
         //std::cout << "Processing line: " << line << std::endl;
         std::istringstream iss(line);
         std::string id, name, description, temp;
@@ -110,5 +109,7 @@ void loadFoodData(const char* filename, LinkedList& itemList){
 
         itemList.addFoodData(item);
         //std::cout << "Added item: " << item.name << " with price $" << item.price.dollars << "." << item.price.cents << std::endl; // Test if added to system
+        }
     }
+    
 }

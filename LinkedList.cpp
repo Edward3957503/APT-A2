@@ -34,20 +34,20 @@ void LinkedList::addFoodData(const FoodItem& item) {
 
 void LinkedList::displayItems() const {
     Node* current = head;
-    if (current == nullptr) {
+    if (current != nullptr) {
+        std::cout << std::left << std::setw(6) << "ID" << "|"
+                  << std::setw(20) << "Name" << "|"
+                  << "Length" << std::endl;
+        std::cout << std::string(37, '-') << std::endl;  // Separator line
+
+        while (current != nullptr) {
+            FoodItem* item = current->data;
+            std::cout << std::left << std::setw(6) << item->id << "|"
+                      << std::setw(20) << item->name << "|"
+                      << "$" << std::setw(6) << std::fixed << std::setprecision(2) << item->price.dollars + item->price.cents / 100.0 << std::endl;
+            current = current->next;
+        }
+    } else {
         std::cout << "No items to display.\n";
-        return;
-    }
-    std::cout << std::left << std::setw(6) << "ID" << "|"
-              << std::setw(20) << "Name" << "|"
-              
-              << "Length" << std::endl;
-    std::cout << std::string(37, '-') << std::endl;  // Separator line
-    while (current != nullptr) {
-        FoodItem* item = current->data;
-        std::cout << std::left << std::setw(6) << item->id << "|"
-                  << std::setw(20) << item->name << "|"
-                  << "$" << std::setw(6) << std::fixed << std::setprecision(2) << item->price.dollars + item->price.cents / 100.0 << std::endl;
-        current = current->next;
     }
 }

@@ -2,15 +2,14 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
+#include <stdexcept> // Include for std::runtime_error
 
 Coin::Coin(Denomination denom, unsigned count) : denom(denom), count(count) {}
 
 void CoinCollection::loadCoinData(const std::string& filename) {
     std::ifstream file(filename);
     if (!file) {
-        std::cerr << "Failed to open " << filename << std::endl;
-        return;
+        throw std::runtime_error("Failed to open " + filename);
     }
 
     std::string line;
