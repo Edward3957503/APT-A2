@@ -15,8 +15,7 @@
  **/
 
 void displayMainMenu();
-void processOption(int option);
-
+void processOption(int option, LinkedList& itemList, CoinCollection& coinsList);
 void loadFoodData(const char* filename, LinkedList& itemList);
 
 
@@ -31,7 +30,7 @@ int main(int argc, char **argv) {
         displayMainMenu();
         std::cout << "Select your option (1-7): ";
         std::cin >> option;
-        processOption(option);
+        processOption(option, itemList, coinsList);
     } while (option != 7);
 
     return EXIT_SUCCESS;
@@ -50,10 +49,11 @@ void displayMainMenu() {
 
 }
 
-void processOption(int option) {
+void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) {
     if (option == 1) {
         // Display Items
         std::cout << "\nDisplaying all items:\n";
+        itemList.displayItems();
     } else if (option == 2) {
         // Purchase Items
     } else if (option == 3) {
@@ -78,8 +78,6 @@ void processOption(int option) {
 }
 
 void loadFoodData(const char* filename, LinkedList& itemList){
-
-
     std::ifstream file(filename);
     if (!file) {
         std::cerr << "Failed to open " << filename << std::endl;
@@ -110,7 +108,7 @@ void loadFoodData(const char* filename, LinkedList& itemList){
         item.price.cents = cents;
         item.on_hand = on_hand;
 
-        itemList.addFoodItem(item);
+        itemList.addFoodData(item);
         //std::cout << "Added item: " << item.name << " with price $" << item.price.dollars << "." << item.price.cents << std::endl; // Test if added to system
     }
 }
