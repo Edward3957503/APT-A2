@@ -9,10 +9,10 @@ public:
     LinkedList();
     ~LinkedList();
 
-    // more functions to be added perhaps...
     void addFoodData(const FoodItem& item);
     void displayItems() const;
     void loadFoodData(const char* filename);
+    FoodItem* findItemById(const std::string& id);
 
 private:
     // the beginning of the list

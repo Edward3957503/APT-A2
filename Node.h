@@ -33,6 +33,7 @@ class Price
 public:
     // The dollar value, and the cents value for some price
     unsigned dollars, cents;
+    
 };
 
 /**

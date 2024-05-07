@@ -10,7 +10,7 @@
 enum Denomination
 {
     FIVE_CENTS, TEN_CENTS, TWENTY_CENTS, FIFTY_CENTS, ONE_DOLLAR, 
-    TWO_DOLLARS, FIVE_DOLLARS, TEN_DOLLARS, TWENTY_DOLLARS
+    TWO_DOLLARS, FIVE_DOLLARS, TEN_DOLLARS, TWENTY_DOLLARS, FIFTY_DOLLARS
 };
 
 
@@ -34,5 +34,8 @@ public:
     std::vector<Coin> coins;
 
     void loadCoinData(const std::string& filename);
+    bool canProvideChange(int amount);
+    void addCoins(int denom);
+    void provideChange(int amount);
 };
 #endif // COIN_H

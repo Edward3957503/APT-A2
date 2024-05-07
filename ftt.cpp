@@ -16,6 +16,8 @@
 
 void displayMainMenu();
 void processOption(int option, LinkedList& itemList, CoinCollection& coinsList);
+void purchaseItem(LinkedList& itemList, CoinCollection& moneyList);
+bool isValidDenomination(int cents);
 void loadFoodData(const char* filename, LinkedList& itemList);
 
 
@@ -55,6 +57,7 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
         itemList.displayItems();
     } else if (option == 2) {
         // Purchase Items
+        purchaseItem(itemList, coinsList);
     } else if (option == 3) {
         // Save and Exit
         // Potentially save state or perform cleanup
@@ -74,4 +77,69 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
         // Handle invalid option
         std::cout << "Invalid option. Please enter a number between 1 and 7.\n";
     }
+}
+
+void purchaseItem(LinkedList& itemList, CoinCollection& coinsList) {
+    std::string itemId;
+    std::cout << "\nPurchase Meal\n";
+    std::cout << "-------------\n";
+    std::cout << "Please enter the id of the item you wish to purchase: ";
+    std::cin >> itemId;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    FoodItem* item = itemList.findItemById(itemId);
+    if (!item) {
+        std::cout << "Item not found.\n";
+    } else if (item->on_hand <= 0) {
+        std::cout << "Item out of stock.\n";
+    } else {
+        double totalCost = item->price.dollars + (item->price.cents / 100.0);
+        std::cout << "You have selected \"" << item->name << "\" - " << item->description
+                  << ". This will cost you $" << std::fixed << std::setprecision(2) << totalCost << ".\n";
+
+        double totalPaid = 0.0;
+        bool transactionCancelled = false;
+        std::cout << "Please hand over the money - type in the value of each note/coin in cents.\n";
+        std::cout << "Please enter ctrl-D or enter on a new line to cancel this purchase.\n";
+        while (!transactionCancelled && totalPaid < totalCost) {
+            std::string input;
+            std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (totalCost - totalPaid) << ": ";
+
+            if (!std::getline(std::cin, input)) {
+                std::cout << "Transaction cancelled. Refunding $" << std::fixed << std::setprecision(2) << totalPaid << "\n";
+                std::cin.clear();
+                transactionCancelled = true;
+            } else if (input.empty()) {
+                std::cout << "Transaction cancelled. Refunding $" << std::fixed << std::setprecision(2) << totalPaid << "\n";
+                transactionCancelled = true;
+            } else {
+                try {
+                    int paymentCents = std::stoi(input);
+                    if (isValidDenomination(paymentCents)) {
+                        totalPaid += paymentCents / 100.0;
+                    } else {
+                        std::cout << "Error: invalid denomination encountered.\n";
+                    }
+                } catch (...) {
+                    std::cout << "Invalid input. Please enter numeric value.\n";
+                }
+            }
+        }
+
+    if (!transactionCancelled && totalPaid >= totalCost) {
+        int change = static_cast<int>((totalPaid - totalCost) * 100);
+        if (coinsList.canProvideChange(change)) {
+            coinsList.provideChange(change);
+            std::cout << "Here is your " << item->name << ". Thank you!\n";
+            item->on_hand--;
+        } else {
+            std::cout << "Sorry, unable to provide the required change. Transaction cannot be completed.\n";
+            std::cout << "Refunding $" << std::fixed << std::setprecision(2) << totalPaid << "\n";
+        }
+    }
+}
+}
+bool isValidDenomination(int cents) {
+    static const std::set<int> validDenominations = {5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000};
+    return validDenominations.find(cents) != validDenominations.end();
 }

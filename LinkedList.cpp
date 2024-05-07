@@ -86,8 +86,19 @@ void LinkedList::loadFoodData(const char* filename) {
         item.on_hand = on_hand;
 
         addFoodData(item);
-        std::cout << "Added item: " << item.name << " with price $" << item.price.dollars << "." << item.price.cents << std::endl; // Test if added to system
+        //std::cout << "Added item: " << item.name << " with price $" << item.price.dollars << "." << item.price.cents << std::endl; // Test if added to system
         }
     }
     
+}
+
+FoodItem* LinkedList::findItemById(const std::string& id) {
+    Node* current = head;
+    while (current != nullptr) {
+        if (current->data->id == id) {
+            return current->data;
+        }
+        current = current->next;
+    }
+    return nullptr;
 }
