@@ -12,6 +12,7 @@ public:
     // more functions to be added perhaps...
     void addFoodData(const FoodItem& item);
     void displayItems() const;
+    void loadFoodData(const char* filename);
 
 private:
     // the beginning of the list
