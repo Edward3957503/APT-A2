@@ -35,9 +35,6 @@ bool CoinCollection::canProvideChange(int amount) {
     for (auto& coin : coins) {
         int coinValue = static_cast<int>(coin.denom);
         int totalCoinValue = coin.count * coinValue;
-        if (changeRemaining <= totalCoinValue) {
-            return true;
-        }
         changeRemaining -= totalCoinValue;
     }
     return changeRemaining <= 0;
@@ -47,7 +44,7 @@ void CoinCollection::addCoins(int denom) {
     for (auto& coin : coins) {
         if (coin.denom == denom) {
             coin.count += 1;
-            std::cout << "Coin: " << denom << ". Count: " << coin.count << "\n";
+            //std::cout << "Coin: " << denom << ". Count: " << coin.count << "\n";
             return;
         }
     }
@@ -58,13 +55,11 @@ void CoinCollection::provideChange(int amount) {
     std::multiset<int> changeDenominations; // Set to store and sort coin denominations used.
 
     for (auto& coin : coins) {
-        if (changeRemaining == 0) break;
         int coinValue = static_cast<int>(coin.denom);
-        while (coin.count > 0 && changeRemaining >= coinValue) {
+        while (coin.count > 0 && changeRemaining >= coinValue && changeRemaining != 0) {
             changeRemaining -= coinValue;
             coin.count--;
             changeDenominations.insert(coinValue);
-            if (changeRemaining == 0) break;
         }
     }
 
@@ -89,5 +84,15 @@ void CoinCollection::provideChange(int amount) {
             std::cout << denominationOutput << " ";
         }
         std::cout << "\n";
+    }
+}
+
+void CoinCollection::removeCoins(int denom, int count) {
+    for (auto& coin : coins) {
+        if (coin.denom == denom) {
+            coin.count -= count;
+            if (coin.count < 0) coin.count = 0; // Prevent negative counts
+            return;
+        }
     }
 }

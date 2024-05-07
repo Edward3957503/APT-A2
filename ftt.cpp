@@ -6,6 +6,7 @@
 #include <set>
 #include <vector>
 #include <limits>
+#include <map>
 #include "LinkedList.h"
 #include "Coin.h"
 /**
@@ -99,6 +100,8 @@ void purchaseItem(LinkedList& itemList, CoinCollection& coinsList) {
 
         double totalPaid = 0.0;
         bool transactionCancelled = false;
+        std::map<int, int> addedCoins; // Track coins added during this transaction
+
         std::cout << "Please hand over the money - type in the value of each note/coin in cents.\n";
         std::cout << "Please enter ctrl-D or enter on a new line to cancel this purchase.\n";
         while (!transactionCancelled && totalPaid < totalCost) {
@@ -117,6 +120,8 @@ void purchaseItem(LinkedList& itemList, CoinCollection& coinsList) {
                     int paymentCents = std::stoi(input);
                     if (isValidDenomination(paymentCents)) {
                         totalPaid += paymentCents / 100.0;
+                        coinsList.addCoins(paymentCents);
+                        addedCoins[paymentCents]++;
                     } else {
                         std::cout << "Error: invalid denomination encountered.\n";
                     }
@@ -126,19 +131,28 @@ void purchaseItem(LinkedList& itemList, CoinCollection& coinsList) {
             }
         }
 
-    if (!transactionCancelled && totalPaid >= totalCost) {
-        int change = static_cast<int>((totalPaid - totalCost) * 100);
-        if (coinsList.canProvideChange(change)) {
-            coinsList.provideChange(change);
-            std::cout << "Here is your " << item->name << ". Thank you!\n";
-            item->on_hand--;
-        } else {
-            std::cout << "Sorry, unable to provide the required change. Transaction cannot be completed.\n";
-            std::cout << "Refunding $" << std::fixed << std::setprecision(2) << totalPaid << "\n";
+        if (transactionCancelled) {
+            for (const auto& pair : addedCoins) {
+                coinsList.removeCoins(pair.first, pair.second);
+            }
+        } else if (totalPaid >= totalCost) {
+            int change = static_cast<int>((totalPaid - totalCost) * 100);
+            if (coinsList.canProvideChange(change)) {
+                coinsList.provideChange(change);
+                std::cout << "Here is your " << item->name << ". Thank you!\n";
+                item->on_hand--;
+            } else {
+                std::cout << "Sorry, unable to provide the required change. Transaction cannot be completed.\n";
+                std::cout << "Refunding $" << std::fixed << std::setprecision(2) << totalPaid << "\n";
+                // Roll back added coins
+                for (const auto& pair : addedCoins) {
+                    coinsList.removeCoins(pair.first, pair.second);
+                }
+            }
         }
     }
 }
-}
+
 bool isValidDenomination(int cents) {
     static const std::set<int> validDenominations = {5, 10, 20, 50, 100, 200, 500, 1000, 2000, 5000};
     return validDenominations.find(cents) != validDenominations.end();
