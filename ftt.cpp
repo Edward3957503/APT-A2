@@ -24,6 +24,7 @@ void loadFoodData(const char* filename, LinkedList& itemList);
 
 int main(int argc, char **argv) {
     int option;
+    bool quit = false;
     LinkedList itemList;
     CoinCollection coinsList;
     itemList.loadFoodData(argv[1]);
@@ -33,12 +34,16 @@ int main(int argc, char **argv) {
         displayMainMenu();
         std::cout << "Select your option (1-7): ";
         std::cin >> option;
-        if (std::cin.fail()) {
+        
+        if (std::cin.fail() || std::cin.eof()) {
             std::cin.clear();
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            quit = true;
         }
-        processOption(option, itemList, coinsList);
-    } while (option != 7);
+        else if (!quit) {
+            processOption(option, itemList, coinsList);
+        }
+    } while (option != 7 && !std::cin.eof() && !quit);
 
 }
 
