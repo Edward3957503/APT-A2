@@ -108,14 +108,12 @@ void purchaseItem(LinkedList& itemList, CoinCollection& coinsList) {
             std::string input;
             std::cout << "You still need to give us $" << std::fixed << std::setprecision(2) << (totalCost - totalPaid) << ": ";
 
-            if (!std::getline(std::cin, input)) {
+            if (!std::getline(std::cin, input) || input.empty()) {
                 std::cout << "Transaction cancelled. Refunding $" << std::fixed << std::setprecision(2) << totalPaid << "\n";
                 std::cin.clear();
                 transactionCancelled = true;
-            } else if (input.empty()) {
-                std::cout << "Transaction cancelled. Refunding $" << std::fixed << std::setprecision(2) << totalPaid << "\n";
-                transactionCancelled = true;
-            } else {
+            } 
+            else {
                 try {
                     int paymentCents = std::stoi(input);
                     if (isValidDenomination(paymentCents)) {
