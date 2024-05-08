@@ -33,6 +33,10 @@ int main(int argc, char **argv) {
         displayMainMenu();
         std::cout << "Select your option (1-7): ";
         std::cin >> option;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
         processOption(option, itemList, coinsList);
     } while (option != 7);
 
@@ -76,7 +80,7 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
         std::cout << "Exiting program.\n";
     } else {
         // Handle invalid option
-        std::cout << "Invalid option. Please enter a number between 1 and 7.\n";
+        std::cout << "Invalid input. Please enter a number between 1 and 7.\n";
     }
 }
 
