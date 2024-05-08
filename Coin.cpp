@@ -73,12 +73,12 @@ void CoinCollection::provideChange(int amount) {
                 denominationOutput = std::to_string(denom) + "c";
             } else {
                 if (denom % 100 == 0) {
-                    denominationOutput = std::to_string(denom / 100) + "$";
+                    denominationOutput = "$" + std::to_string(denom / 100);
                 } else {
                     double dollarValue = denom / 100.0;
                     std::stringstream stream;
                     stream << std::fixed << std::setprecision(2) << dollarValue;
-                    denominationOutput = stream.str() + "$";
+                    denominationOutput = "$" + stream.str();
                 }
             }
             std::cout << denominationOutput << " ";
