@@ -14,6 +14,15 @@ public:
     void loadFoodData(const char* filename);
     FoodItem* findItemById(const std::string& id);
 
+    /*
+        * Save Data and Exit:
+        This function saves all the data stored in the linked list to a file named "savedData.dat".
+        It traverses the linked list, writes the data of each node to the file in the specified format,
+        and deletes each node after writing its data to "savedData.dat" file. Finally, it closes the file and exits the program.
+        If the file creation fails, it throws a runtime error.
+    */
+    void saveDataAndExit();
+
 private:
     // the beginning of the list
     Node* head;

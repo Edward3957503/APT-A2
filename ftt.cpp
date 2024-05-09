@@ -69,8 +69,9 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
         // Purchase Items
         purchaseItem(itemList, coinsList);
     } else if (option == 3) {
+
         // Save and Exit
-        // Potentially save state or perform cleanup
+        itemList.saveDataAndExit();
     } else if (option == 4) {
         // Add Item
         // Implement as needed
