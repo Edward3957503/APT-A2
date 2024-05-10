@@ -96,3 +96,37 @@ void CoinCollection::removeCoins(int denom, int count) {
         }
     }
 }
+
+#include "Coin.h"
+#include <iostream>
+#include <iomanip>
+#include <algorithm>
+
+void CoinCollection::displayBalance() {
+    std::cout << "Balance Summary" << std::endl;
+    std::cout << "-------------" << std::endl;
+    std::cout << "Denom | Quantity | Value" << std::endl;
+    std::cout << "---------------------------" << std::endl;
+    
+    double total = 0.00;
+    for (int i=coins.size(); i >= 0  ; --i){
+        
+        int denomination = static_cast<int>(coins[i].denom);
+        int count = coins[i].count;
+        double value = denomination * count / 100.0; 
+
+        total += value;
+
+        // Print the (coin type) | (amount) | (total value)
+        std::cout << std::setw(5) << denomination << " | "
+                  << std::setw(8) << count << " | $"
+                  << std::setw(8) << std::fixed << std::setprecision(2) << value << std::endl;
+}
+    for(int i=0; i < 28; ++i){
+        std::cout << "-";
+    }
+
+    std::cout << std::endl;
+    std::cout << std::setw(20) << "$" << "  " << total << std::endl;
+}
+

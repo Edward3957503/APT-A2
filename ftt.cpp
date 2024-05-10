@@ -79,6 +79,7 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
     } else if (option == 6) {
         // Display Balance
         // Code to display balance
+        coinsList.displayBalance();
     } else if (option == 7) {
         // Abort Program
         std::cout << "Exiting program.\n";
