@@ -186,3 +186,45 @@ void LinkedList::createFood(){
 
     std::cout << "This item \"" << name << " - " << description << ".\" has now been added to the food menu" << std::endl;
 }
+
+
+void LinkedList::deleteFoodById() {
+    Node* current = head;
+    Node* prev = nullptr;
+    bool quit = false;
+    std::string id = "";
+    std::cout << "Enter the food id of the food to remove from the menu: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    if (!std::getline(std::cin, id) || id.empty() || std::cin.eof()){
+        quit = true;
+    }
+
+    if(current == nullptr && !quit) {
+        std::cout << "Food list is emtpy. Food with (" << id << ") cannot be found." << std::endl;
+        delete current;
+        quit = true;
+    }    
+
+    while (current != nullptr && !quit) {
+        if (current->data->id == id) {
+            std::cout << "“" << id << " - " << current->data->name << " - " << current->data->description << "”"<< " has been removed from the system." << std::endl;
+            if (prev == nullptr) {
+                // If the node to delete is the head
+                head = current->next;
+            } 
+            else {
+                prev->next = current->next;
+            }
+            delete current;
+            quit = true;
+        }
+        else if (current->data->id != id) {
+            std::cout << "Food with id (" << id << ") was not found." << std::endl;
+            quit = true;
+        }
+        prev = current;
+        current = current->next;
+        
+    } 
+}

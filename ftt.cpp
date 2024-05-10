@@ -75,7 +75,7 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
 
     } else if (option == 5) {
         // Remove Item
-        // Implement as needed
+        itemList.deleteFoodById();
     } else if (option == 6) {
         // Display Balance
         // Code to display balance
