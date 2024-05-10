@@ -3,6 +3,8 @@
 #include <iomanip>
 #include <sstream>
 #include <fstream>
+#include <limits>
+
 LinkedList::LinkedList() : head(nullptr), count(0) {
     // Constructor body
     // Initialize any needed fields, such as the head pointer and count
