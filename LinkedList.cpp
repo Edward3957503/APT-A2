@@ -140,13 +140,13 @@ void LinkedList::createFood(){
     std::ostringstream nextId;
     nextId << "F" << std::setw(4) << std::setfill('0') << (count + 1);
     // set width to 4 
-    // make sure there is always 4 numbers after 'F'
+    // make sure there is always 4 numbers after 'F' = 5 characters long
     // current number of food(count) + 1
-    id = nextId.str(); // change num to str
+    id = nextId.str(); // convert stream to string 
 
     // Prompt the user for food details
     std::cout << "This new meal item will have the Item id of " << id << "." << std::endl;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore line from input 4 (ftt.cpp)
     
     std::cout << "Enter the item name: ";
     std::getline(std::cin, name);
@@ -154,31 +154,33 @@ void LinkedList::createFood(){
     std::cout << "Enter the item description:";
     std::getline(std::cin, description);
 
-    // Validate and prompt for price until a valid input is provided
     bool valid_price = false;
-    while (!valid_price) {
+    while (!valid_price) { // check for valid input
         std::string price_input;
         std::cout << "Enter the price for this item (in dollars.cents format): ";
-        std::getline(std::cin, price_input);
-        std::istringstream iss(price_input);
+        std::getline(std::cin, price_input); //store the entire line in price_input
+        std::istringstream iss(price_input); //store price_input into istringstream
 
         char dot;
-        if (iss >> dollars && (iss >> dot && dot == '.') && (iss >> cents && cents < 100) ) {
+        // store value into dollars
+        // store dot and check if it is the right character
+        // store cents and check if its less then 100 coins
+
+        if (iss >> dollars && (iss >> dot && dot == '.') && (iss >> cents && cents < 100) ) { 
             valid_price = true;
         } 
         else {
-            std::cout << "Invalid input. Price must have dollars and cents components.\n";
+            std::cout << "Invalid input. The price entered for an item must have a dollars and a cents component\n";
         }
     }
-
-    // Add the new food item to the system
+    // add the food item to the program
     FoodItem item;
     item.id = id;
     item.name = name;
     item.description = description;
     item.price.dollars = dollars;
     item.price.cents = cents;
-    item.on_hand = DEFAULT_FOOD_STOCK_LEVEL; // Set default value, you may adjust this based on your system
+    item.on_hand = DEFAULT_FOOD_STOCK_LEVEL; // Set value to 20
 
     addFoodData(item);
 
