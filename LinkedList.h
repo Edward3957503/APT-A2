@@ -13,6 +13,7 @@ public:
     void displayItems() const;
     void loadFoodData(const char* filename);
     FoodItem* findItemById(const std::string& id);
+    void createFood();
 
     /*
         * Save Data and Exit:

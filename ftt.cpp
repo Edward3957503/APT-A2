@@ -65,16 +65,14 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
         // Display Items
         std::cout << "\nDisplaying all items:\n";
         itemList.displayItems();
-    } else if (option == 2) {
-        // Purchase Items
+    } else if (option == 2) {// Purchase Items
         purchaseItem(itemList, coinsList);
-    } else if (option == 3) {
 
-        // Save and Exit
+    } else if (option == 3) { // Save and Exit
         itemList.saveDataAndExit();
-    } else if (option == 4) {
-        // Add Item
-        // Implement as needed
+    } else if (option == 4) { // add food item
+        itemList.createFood();
+
     } else if (option == 5) {
         // Remove Item
         // Implement as needed

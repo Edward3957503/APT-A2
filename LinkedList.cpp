@@ -131,3 +131,56 @@ void LinkedList::saveDataAndExit() {
     // Exit out of program
     exit(EXIT_SUCCESS); 
 }
+
+void LinkedList::createFood(){
+    std::string id, name, description;
+    unsigned dollars, cents;
+
+    // Determine the next available food item id
+    std::ostringstream nextId;
+    nextId << "F" << std::setw(4) << std::setfill('0') << (count + 1);
+    // set width to 4 
+    // make sure there is always 4 numbers after 'F'
+    // current number of food(count) + 1
+    id = nextId.str(); // change num to str
+
+    // Prompt the user for food details
+    std::cout << "This new meal item will have the Item id of " << id << "." << std::endl;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    
+    std::cout << "Enter the item name: ";
+    std::getline(std::cin, name);
+    
+    std::cout << "Enter the item description:";
+    std::getline(std::cin, description);
+
+    // Validate and prompt for price until a valid input is provided
+    bool valid_price = false;
+    while (!valid_price) {
+        std::string price_input;
+        std::cout << "Enter the price for this item (in dollars.cents format): ";
+        std::getline(std::cin, price_input);
+        std::istringstream iss(price_input);
+
+        char dot;
+        if (iss >> dollars && (iss >> dot && dot == '.') && (iss >> cents && cents < 100) ) {
+            valid_price = true;
+        } 
+        else {
+            std::cout << "Invalid input. Price must have dollars and cents components.\n";
+        }
+    }
+
+    // Add the new food item to the system
+    FoodItem item;
+    item.id = id;
+    item.name = name;
+    item.description = description;
+    item.price.dollars = dollars;
+    item.price.cents = cents;
+    item.on_hand = DEFAULT_FOOD_STOCK_LEVEL; // Set default value, you may adjust this based on your system
+
+    addFoodData(item);
+
+    std::cout << "This item \"" << name << " - " << description << ".\" has now been added to the food menu" << std::endl;
+}
