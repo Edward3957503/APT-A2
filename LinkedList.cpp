@@ -15,8 +15,10 @@ LinkedList::~LinkedList() {
         Node* next = current->next;
         delete current;  // Node's destructor will delete the FoodItem object
         current = next;
-        count--;
     }
+
+    // Set the count to 0
+    count = 0;
 }
 
 void LinkedList::addFoodData(const FoodItem& item) {
@@ -91,6 +93,9 @@ void LinkedList::loadFoodData(const char* filename) {
         //std::cout << "Added item: " << item.name << " with price $" << item.price.dollars << "." << item.price.cents << std::endl; // Test if added to system
         }
     }
+
+    // Close reading file to avoid memory leack
+    file.close();
     
 }
 

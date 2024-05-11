@@ -28,6 +28,9 @@ void CoinCollection::loadCoinData(const std::string& filename) {
         Denomination denom = static_cast<Denomination>(value);
         coins.emplace_back(denom, count);
     }
+
+    // closing reading file.
+    file.close();
 }
 
 
