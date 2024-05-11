@@ -83,6 +83,9 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
     } else if (option == 7) {
         // Abort Program
         std::cout << "Exiting program.\n";
+        itemList.~LinkedList();
+        exit(EXIT_SUCCESS);
+        
     } else {
         // Handle invalid option
         std::cout << "Invalid input. Please enter a number between 1 and 7.\n";
