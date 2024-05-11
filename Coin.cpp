@@ -6,7 +6,7 @@
 #include <stdexcept>
 #include <vector>
 #include <set>
-
+#include <algorithm>
 
 Coin::Coin(Denomination denom, unsigned count) : denom(denom), count(count) {}
 
@@ -96,10 +96,7 @@ void CoinCollection::removeCoins(int denom, int count) {
     }
 }
 
-#include "Coin.h"
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
+
 
 void CoinCollection::displayBalance() {
     std::cout << "Balance Summary" << std::endl;
@@ -108,7 +105,7 @@ void CoinCollection::displayBalance() {
     std::cout << "---------------------------" << std::endl;
     
     double total = 0.00;
-    for (int i=coins.size(); i >= 0  ; --i){
+    for (int i=coins.size()-1; i >= 0  ; --i){
         
         int denomination = static_cast<int>(coins[i].denom);
         int count = coins[i].count;
