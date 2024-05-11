@@ -3,6 +3,8 @@
 #include <iomanip>
 #include <sstream>
 #include <fstream>
+#include <limits>
+
 LinkedList::LinkedList() : head(nullptr), count(0) {
     // Constructor body
     // Initialize any needed fields, such as the head pointer and count
@@ -130,4 +132,101 @@ void LinkedList::saveDataAndExit() {
 
     // Exit out of program
     exit(EXIT_SUCCESS); 
+}
+
+void LinkedList::createFood(){
+    std::string id, name, description;
+    unsigned dollars, cents;
+
+    // Determine the next available food item id
+    std::ostringstream nextId;
+    nextId << "F" << std::setw(4) << std::setfill('0') << (count + 1);
+    // set width to 4 
+    // make sure there is always 4 numbers after 'F' = 5 characters long
+    // current number of food(count) + 1
+    id = nextId.str(); // convert stream to string 
+
+    // Prompt the user for food details
+    std::cout << "This new meal item will have the Item id of " << id << "." << std::endl;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore line from input 4 (ftt.cpp)
+    
+    std::cout << "Enter the item name: ";
+    std::getline(std::cin, name);
+    
+    std::cout << "Enter the item description:";
+    std::getline(std::cin, description);
+
+    bool valid_price = false;
+    while (!valid_price) { // check for valid input
+        std::string price_input;
+        std::cout << "Enter the price for this item (in dollars.cents format): ";
+        std::getline(std::cin, price_input); //store the entire line in price_input
+        std::istringstream iss(price_input); //store price_input into istringstream
+
+        char dot;
+        // store value into dollars
+        // store dot and check if it is the right character
+        // store cents and check if its less then 100 coins
+
+        if (iss >> dollars && (iss >> dot && dot == '.') && (iss >> cents && cents < 100) ) { 
+            valid_price = true;
+        } 
+        else {
+            std::cout << "Invalid input. The price entered for an item must have a dollars and a cents component\n";
+        }
+    }
+    // add the food item to the program
+    FoodItem item;
+    item.id = id;
+    item.name = name;
+    item.description = description;
+    item.price.dollars = dollars;
+    item.price.cents = cents;
+    item.on_hand = DEFAULT_FOOD_STOCK_LEVEL; // Set value to 20
+
+    addFoodData(item);
+
+    std::cout << "This item \"" << name << " - " << description << ".\" has now been added to the food menu" << std::endl;
+}
+
+
+void LinkedList::deleteFoodById() {
+    Node* current = head;
+    Node* prev = nullptr;
+    bool quit = false;
+    std::string id = "";
+    std::cout << "Enter the food id of the food to remove from the menu: ";
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    if (!std::getline(std::cin, id) || id.empty() || std::cin.eof()){
+        quit = true;
+    }
+
+    if(current == nullptr && !quit) {
+        std::cout << "Food list is emtpy. Food with (" << id << ") cannot be found." << std::endl;
+        delete current;
+        quit = true;
+    }    
+
+    while (current != nullptr && !quit) {
+        if (current->data->id == id) {
+            std::cout << "“" << id << " - " << current->data->name << " - " << current->data->description << "”"<< " has been removed from the system." << std::endl;
+            if (prev == nullptr) {
+                // If the node to delete is the head
+                head = current->next;
+            } 
+            else {
+                prev->next = current->next;
+            }
+            delete current;
+            quit = true;
+        }
+        else if (current->data->id != id) {
+            std::cout << "Food with id (" << id << ") was not found." << std::endl;
+            quit = true;
+        }
+        prev = current;
+        current = current->next;
+        
+    } 
 }

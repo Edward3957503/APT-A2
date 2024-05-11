@@ -37,6 +37,7 @@ public:
     bool canProvideChange(int amount);
     void addCoins(int denom);
     void removeCoins(int denom, int count);
+    void displayBalance();
     bool provideChange(int amount);
 };
 #endif // COIN_H
