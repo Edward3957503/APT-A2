@@ -123,6 +123,10 @@ void LinkedList::saveDataAndExit() {
 
         // Storing the next node
         Node* nextNode = current->next;
+
+        // Deleting the foodItem object
+        delete current->data;
+        
         // Deleting the current node
         delete current;
         // Moving to the next node in the linkedList.
