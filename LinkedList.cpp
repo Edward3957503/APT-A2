@@ -40,7 +40,7 @@ void LinkedList::displayItems() const {
         std::cout << std::left << std::setw(6) << "ID" << "|"
                   << std::setw(20) << "Name" << "|"
                   << "Length" << std::endl;
-        std::cout << std::string(37, '-') << std::endl;  // Separator line
+        std::cout << std::string(37, '-') << std::endl;
 
         while (current != nullptr) {
             FoodItem* item = current->data;

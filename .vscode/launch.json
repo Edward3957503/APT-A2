@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/Edward/Downloads/APT-A2",
-      "program": "c:/Users/Edward/Downloads/APT-A2/build/Debug/outDebug",
+      "cwd": "c:/Users/Edward/Documents/RMIT/Advanced Programming Techniques/APT-A2",
+      "program": "c:/Users/Edward/Documents/RMIT/Advanced Programming Techniques/APT-A2/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

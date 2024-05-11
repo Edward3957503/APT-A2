@@ -30,15 +30,7 @@ void CoinCollection::loadCoinData(const std::string& filename) {
     }
 }
 
-bool CoinCollection::canProvideChange(int amount) {
-    int changeRemaining = amount;
-    for (auto& coin : coins) {
-        int coinValue = static_cast<int>(coin.denom);
-        int totalCoinValue = coin.count * coinValue;
-        changeRemaining -= totalCoinValue;
-    }
-    return changeRemaining <= 0;
-}
+
 
 void CoinCollection::addCoins(int denom) {
     for (auto& coin : coins) {
@@ -50,22 +42,24 @@ void CoinCollection::addCoins(int denom) {
     }
 }
 
-void CoinCollection::provideChange(int amount) {
+bool CoinCollection::provideChange(int amount) {
     int changeRemaining = amount;
-    std::multiset<int> changeDenominations; // Set to store and sort coin denominations used.
+    std::multiset<int> changeDenominations;
+    bool changeGiven = false;
 
     for (auto& coin : coins) {
         int coinValue = static_cast<int>(coin.denom);
-        while (coin.count > 0 && changeRemaining >= coinValue && changeRemaining != 0) {
+        while (coin.count > 0 && changeRemaining >= coinValue) {
             changeRemaining -= coinValue;
             coin.count--;
             changeDenominations.insert(coinValue);
+            changeGiven = true;
         }
     }
 
     if (changeRemaining > 0) {
         std::cout << "Unable to provide exact change. Missing: " << changeRemaining << " cents.\n";
-    } else {
+    } else if (changeGiven) {
         std::cout << "Your change is: ";
         for (int denom : changeDenominations) {
             std::string denominationOutput;
@@ -85,13 +79,18 @@ void CoinCollection::provideChange(int amount) {
         }
         std::cout << "\n";
     }
+
+    // Single return statement that evaluates if the change was successfully given
+    return changeRemaining == 0 && changeGiven;
 }
+
+
 
 void CoinCollection::removeCoins(int denom, int count) {
     for (auto& coin : coins) {
         if (coin.denom == denom) {
             coin.count -= count;
-            if (coin.count < 0) coin.count = 0; // Prevent negative counts
+            if (coin.count < 0) coin.count = 0;
             return;
         }
     }
