@@ -1,8 +1,8 @@
 #include "Node.h"
 
-Node::Node(){
-    // TODO
-};
+// Constructor definition
+Node::Node() : next(nullptr), data(nullptr) {}
+
 Node::~Node(){
-    // TODO
+    delete data; // Make sure to delete the allocated Stock object to avoid memory leaks
 };

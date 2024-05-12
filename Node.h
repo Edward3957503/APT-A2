@@ -23,7 +23,7 @@
 #define NUM_DENOMS 8
 
 /**
- * a structure to represent a price. One of the problems with the floating
+ * A structure to represent a price. One of the problems with the floating
  * point formats in C++ like float and double is that they have minor issues
  * of inaccuracy due to rounding. In the case of currency this really is
  * not acceptable so we introduce our own type to keep track of currency.
@@ -33,6 +33,7 @@ class Price
 public:
     // The dollar value, and the cents value for some price
     unsigned dollars, cents;
+    Price() : dollars(0), cents(0) {}  // Default constructor for Price
     
 };
 
@@ -57,6 +58,7 @@ public:
     // how many of this food item do we have on hand? 
     unsigned on_hand;    
 };
+
 
 /**
  * the node that holds the data about a food item stored in memory
