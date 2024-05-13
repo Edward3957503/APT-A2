@@ -69,8 +69,8 @@ void LinkedList::loadFoodData(const char* filename) {
         while (std::getline(file, line)) {
         //std::cout << "Processing line: " << line << std::endl;
         std::istringstream iss(line);
-        std::string id, name, description, temp;
-        unsigned dollars, cents, on_hand;
+        std::string id, name, description, temp, onHandStr;
+        unsigned dollars = 0, cents = 0, on_hand = DEFAULT_FOOD_STOCK_LEVEL;
 
         std::getline(iss, id, '|');
         std::getline(iss, name, '|');
@@ -78,8 +78,11 @@ void LinkedList::loadFoodData(const char* filename) {
         std::getline(iss, temp, '|');
         dollars = std::stoi(temp.substr(0, temp.find('.')));
         cents = std::stoi(temp.substr(temp.find('.') + 1));
-        std::getline(iss, temp, '|');
-        on_hand = std::stoi(temp);
+        std::getline(iss, onHandStr, '|');
+        // Parse on-hand stock if available
+        if (!onHandStr.empty()) {
+            on_hand = std::stoi(onHandStr);
+        }
 
         FoodItem item;
         item.id = id;
@@ -111,14 +114,15 @@ FoodItem* LinkedList::findItemById(const std::string& id) {
 }
 
 
-void LinkedList::saveDataAndExit() {
-    std::ofstream expected_output ("./foods.dat");
+void LinkedList::saveDataAndExit(const std::string& foodFilename, const std::string& coinFilename, const CoinCollection& coinsList) {
+    // Saving Food Items
+    std::ofstream foodFile(foodFilename);
     Node* current = head;
-    if (!expected_output) {
+    if (!foodFile) {
         throw std::runtime_error("Failed to create expected_output.dat file.");
     }
     while (current != nullptr) {
-        expected_output << current->data->id << "|" << current->data->name << "|" << 
+        foodFile << current->data->id << "|" << current->data->name << "|" << 
         current->data->description << "|" << current->data->price.dollars << "." << 
         current->data->price.cents << "|"<< current->data->on_hand  << std::endl;
 
@@ -133,13 +137,24 @@ void LinkedList::saveDataAndExit() {
 
     // Assign the head pointer to nullptr to avoid memory leack.
     head = nullptr;
+    foodFile.close();
 
-    // Close the file
-    expected_output.close();
+    // Saving Coin Data
+    std::ofstream coinFile(coinFilename);
+    if (!coinFile) {
+        std::cerr << "Failed to open " << coinFilename << " for writing.\n";
+        exit(EXIT_FAILURE);
+    }
 
-    // Exit out of program
-    exit(EXIT_SUCCESS); 
+    for (const auto& coin : coinsList.coins) {
+        coinFile << static_cast<int>(coin.denom) << "," << coin.count << "\n";
+    }
+    coinFile.close();
+
+    std::cout << "All data saved successfully. Exiting program.\n";
+    exit(EXIT_SUCCESS);
 }
+
 
 void LinkedList::createFood(){
     std::string id, name, description;

@@ -22,7 +22,7 @@ public:
         and deletes each node after writing its data to "savedData.dat" file. Finally, it closes the file and exits the program.
         If the file creation fails, it throws a runtime error.
     */
-    void saveDataAndExit();
+    void saveDataAndExit(const std::string& foodFilename, const std::string& coinFilename, const CoinCollection& coinsList);
 
     /*
         This function allows the administrator to remove a food item from the menu by specifying its unique ID.

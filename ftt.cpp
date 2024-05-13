@@ -61,6 +61,8 @@ void displayMainMenu() {
 }
 
 void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) {
+    std::string foodFile = "./foods.dat";
+    std::string coinFile = "./coins.dat";
     if (option == 1) {
         // Display Items
         std::cout << "\nDisplaying all items:\n";
@@ -69,7 +71,7 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
         purchaseItem(itemList, coinsList);
 
     } else if (option == 3) { // Save and Exit
-        itemList.saveDataAndExit();
+        itemList.saveDataAndExit(foodFile, coinFile, coinsList);
     } else if (option == 4) { // add food item
         itemList.createFood();
 
