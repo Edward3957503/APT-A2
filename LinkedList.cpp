@@ -227,16 +227,16 @@ void LinkedList::deleteFoodById() {
             else {
                 prev->next = current->next;
             }
-            // Deleting the node data
-            delete current->data;
+            
             // Creating a temprary node to store the current.next;
             Node* temp = current->next;
             // Deleting the current node;
             delete current;
-            
+            // Deleting the node data
+            delete current->data;
             // assigning the current node to temp node.
             current = temp;
-
+            // Set the quit to true.
             quit = true;
         }
         else if (current->data->id != id) {
