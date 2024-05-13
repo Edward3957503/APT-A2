@@ -119,7 +119,8 @@ void LinkedList::saveDataAndExit() {
     }
     while (current != nullptr) {
         expected_output << current->data->id << "|" << current->data->name << "|" << 
-        current->data->description << "|" << current->data->price.dollars << "." << current->data->price.cents << std::endl;
+        current->data->description << "|" << current->data->price.dollars << "." << 
+        current->data->price.cents << "|"<< current->data->on_hand  << std::endl;
 
         // Storing the next node
         Node* nextNode = current->next;
