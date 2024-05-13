@@ -112,7 +112,7 @@ FoodItem* LinkedList::findItemById(const std::string& id) {
 
 
 void LinkedList::saveDataAndExit() {
-    std::ofstream expected_output ("./expected_output.dat");
+    std::ofstream expected_output ("./foods.dat");
     Node* current = head;
     if (!expected_output) {
         throw std::runtime_error("Failed to create expected_output.dat file.");
