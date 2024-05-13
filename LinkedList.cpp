@@ -112,21 +112,18 @@ FoodItem* LinkedList::findItemById(const std::string& id) {
 
 
 void LinkedList::saveDataAndExit() {
-    std::ofstream savedData ("./savedData.dat");
+    std::ofstream expected_output ("./expected_output.dat");
     Node* current = head;
-    if (!savedData) {
-        throw std::runtime_error("Failed to create saveData.dat file.");
+    if (!expected_output) {
+        throw std::runtime_error("Failed to create expected_output.dat file.");
     }
     while (current != nullptr) {
-        savedData << current->data->id << "|" << current->data->name << "|" << 
+        expected_output << current->data->id << "|" << current->data->name << "|" << 
         current->data->description << "|" << current->data->price.dollars << "." << current->data->price.cents << std::endl;
 
         // Storing the next node
         Node* nextNode = current->next;
 
-        // Deleting the foodItem object
-        delete current->data;
-        
         // Deleting the current node
         delete current;
         // Moving to the next node in the linkedList.
@@ -137,7 +134,7 @@ void LinkedList::saveDataAndExit() {
     head = nullptr;
 
     // Close the file
-    savedData.close();
+    expected_output.close();
 
     // Exit out of program
     exit(EXIT_SUCCESS); 
