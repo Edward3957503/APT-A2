@@ -14,6 +14,7 @@ public:
     void loadFoodData(const char* filename);
     FoodItem* findItemById(const std::string& id);
     void createFood();
+    bool checkForInvalidValues(std::string);
 
     /*
         * Save Data and Exit:

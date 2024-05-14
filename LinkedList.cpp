@@ -159,8 +159,9 @@ void LinkedList::saveDataAndExit(const std::string& foodFilename, const std::str
 
 
 void LinkedList::createFood(){
-    std::string id, name, description;
+    std::string id, name, description, tempStrCents;
     unsigned dollars, cents;
+    char dot;
 
     // Determine the next available food item id
     std::ostringstream nextId;
@@ -176,27 +177,35 @@ void LinkedList::createFood(){
     
     std::cout << "Enter the item name: ";
     std::getline(std::cin, name);
+    if(checkForInvalidValues(name) == true){return;}
     
     std::cout << "Enter the item description:";
     std::getline(std::cin, description);
+    if(checkForInvalidValues(description) == true){return;}
 
     bool valid_price = false;
     while (!valid_price) { // check for valid input
         std::string price_input;
         std::cout << "Enter the price for this item (in dollars.cents format): ";
-        std::getline(std::cin, price_input); //store the entire line in price_input
-        std::istringstream iss(price_input); //store price_input into istringstream
+        std::getline(std::cin, price_input); 
+        if(checkForInvalidValues(price_input) == true){return;} // invalid values returns to main menu
 
-        char dot;
-        // store value into dollars
-        // store dot and check if it is the right character
-        // store cents and check if its less then 100 coins
+        std::istringstream iss(price_input); 
 
-        if (iss >> dollars && (iss >> dot && dot == '.') && (iss >> cents && cents < 100) ) { 
+        iss >> dollars >> dot >> cents;
+        tempStrCents = std::to_string(cents); // to check if there are 2 numbers after dot 
+
+        if (dollars && dot == '.' && (cents < 100 && cents % 5 == 0) && tempStrCents.size() == 2) { 
             valid_price = true;
-        } 
-        else {
-            std::cout << "Invalid input. The price entered for an item must have a dollars and a cents component\n";
+        }
+        else if (price_input.find('.') == std::string::npos){
+            std::cout << "Error: money is not formatted properly" << std::endl;
+        }
+        else if(!(tempStrCents.size() == 2)){
+            std::cout << "Error: there are not two digits for cents." << std::endl;
+        }
+        else if(cents % 5 != 0){
+            std::cout << "Error: price is not a valid denomination." << std::endl;
         }
     }
     // add the food item to the program
@@ -213,6 +222,15 @@ void LinkedList::createFood(){
     std::cout << "This item \"" << name << " - " << description << ".\" has now been added to the food menu" << std::endl;
 }
 
+bool LinkedList::checkForInvalidValues(std::string name){
+    if(name.empty()){
+        std::cout << "Option cancelled, returning to menu." << std::endl;
+        return true;
+        }
+    else{
+        return false;
+        }
+}
 
 void LinkedList::deleteFoodById() {
     Node* current = head;
