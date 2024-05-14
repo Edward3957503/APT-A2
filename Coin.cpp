@@ -102,11 +102,15 @@ void CoinCollection::removeCoins(int denom, int count) {
 
 
 void CoinCollection::displayBalance() {
+    std::cout << std::endl;
     std::cout << "Balance Summary" << std::endl;
     std::cout << "-------------" << std::endl;
     std::cout << "Denom | Quantity | Value" << std::endl;
-    std::cout << "---------------------------" << std::endl;
-    
+    for(int i=0; i < 28; ++i){
+        std::cout << "-";
+    }
+    std::cout << std::endl;
+                  
     double total = 0.00;
     for (int i=coins.size()-1; i >= 0  ; --i){
         
