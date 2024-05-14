@@ -39,6 +39,8 @@ void LinkedList::addFoodData(const FoodItem& item) {
 }
 
 void LinkedList::displayItems() const {
+    std::cout << "\nFood Menu\n";
+    std::cout << std::string(9, '-') << std::endl;
     Node* current = head;
     if (current != nullptr) {
         std::cout << std::left << std::setw(6) << "ID" << "|"

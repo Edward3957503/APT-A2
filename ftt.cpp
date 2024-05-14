@@ -37,7 +37,6 @@ int main(int argc, char **argv) {
         
         if (std::cin.fail() || std::cin.eof()) {
             std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             quit = true;
         }
         else if (!quit) {
@@ -64,32 +63,22 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
     std::string foodFile = "./foods.dat";
     std::string coinFile = "./coins.dat";
     if (option == 1) {
-        // Display Items
-        std::cout << "\nDisplaying all items:\n";
         itemList.displayItems();
-    } else if (option == 2) {// Purchase Items
+    } else if (option == 2) {
         purchaseItem(itemList, coinsList);
-
-    } else if (option == 3) { // Save and Exit
+    } else if (option == 3) {
         itemList.saveDataAndExit(foodFile, coinFile, coinsList);
-    } else if (option == 4) { // add food item
+    } else if (option == 4) {
         itemList.createFood();
-
     } else if (option == 5) {
-        // Remove Item
         itemList.deleteFoodById();
     } else if (option == 6) {
-        // Display Balance
-        // Code to display balance
         coinsList.displayBalance();
     } else if (option == 7) {
-        // Abort Program
-        std::cout << "Exiting program.\n";
+
         exit(EXIT_SUCCESS);
-        
     } else {
-        // Handle invalid option
-        std::cout << "Invalid input. Please enter a number between 1 and 7.\n";
+        std::cout << "Error: number was outside of range.\n";
     }
 }
 
@@ -98,9 +87,13 @@ void purchaseItem(LinkedList& itemList, CoinCollection& coinsList) {
     std::cout << "\nPurchase Meal\n";
     std::cout << "-------------\n";
     std::cout << "Please enter the id of the item you wish to purchase: ";
-    std::cin >> itemId;
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
+    if (!std::getline(std::cin, itemId) || itemId.empty()) {
+        if (itemId.empty()) {
+            std::cout << "Purchase cancelled\n";
+        }
+        return;
+    }
     FoodItem* item = itemList.findItemById(itemId);
     bool transactionCancelled = false;
     std::map<int, int> addedCoins; 
