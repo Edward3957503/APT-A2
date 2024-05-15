@@ -135,15 +135,15 @@ void LinkedList::saveDataAndExit(const std::string& foodFilename, const std::str
     std::ofstream coinFile(coinFilename);
     if (!coinFile) {
         std::cerr << "Failed to open " << coinFilename << " for writing.\n";
-        exit(EXIT_FAILURE);
     }
+    else {
+        for (const auto& coin : coinsList.coins) {
+            coinFile << static_cast<int>(coin.denom) << "," << coin.count << "\n";
+        }
+        coinFile.close();
 
-    for (const auto& coin : coinsList.coins) {
-        coinFile << static_cast<int>(coin.denom) << "," << coin.count << "\n";
+        std::cout << "All data saved successfully. Exiting program.\n";
     }
-    coinFile.close();
-
-    std::cout << "All data saved successfully. Exiting program.\n";
     exit(EXIT_SUCCESS);
 }
 
@@ -151,52 +151,47 @@ void LinkedList::createFood() {
     std::string id, name, description, price_input;
     unsigned dollars, cents;
     char dot;
-    bool cancel = false;
-
-    // Generate the next item ID
+    bool cancel = false, eof_encountered = false;
     std::ostringstream nextId;
     nextId << "F" << std::setw(4) << std::setfill('0') << (count + 1);
     id = nextId.str();
 
     std::cout << "This new meal item will have the Item id of " << id << "." << std::endl;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    
     std::cout << "Enter the item name: ";
     std::getline(std::cin, name);
     if (std::cin.eof()) {
-        exit(EXIT_SUCCESS);
+        eof_encountered = true;
     }
-    if (name.empty()) {
+    else if (name.empty()) {
         cancel = true;
     } else {
         capitalizeFirstLetter(name);
     }
     
-    if (!cancel) {
+    if (!cancel && !eof_encountered) {
         std::cout << "Enter the item description: ";
         std::getline(std::cin, description);
         if (std::cin.eof()) {
-            exit(EXIT_SUCCESS);
+            eof_encountered = true;
         }
-        if (description.empty()) {
+        else if (description.empty()) {
             cancel = true;
         } else {
             capitalizeFirstLetter(description);
         }
     }
 
-    if (!cancel) {
+    if (!cancel && !eof_encountered) {
         bool valid_price = false;
-        std::cout << "Enter the item price (in cents format): ";
+        std::cout << "Enter the item price (in cents): ";
         while (!valid_price && !cancel) {
             std::getline(std::cin, price_input);
             if (std::cin.eof()) {
-                exit(EXIT_SUCCESS);
+                eof_encountered = true;
             }
             if (price_input.empty()) {
                 cancel = true;
-            }
-            else {
+            } else {
                 std::istringstream iss(price_input);
                 if (!(iss >> dollars >> dot >> cents)) {
                     if (price_input.find('.') == std::string::npos) {
@@ -218,7 +213,7 @@ void LinkedList::createFood() {
         }
     }
 
-    if (!cancel) {
+    if (!cancel && !eof_encountered) {
         FoodItem item;
         item.id = id;
         item.name = name;
@@ -229,10 +224,15 @@ void LinkedList::createFood() {
 
         addFoodData(item);
         std::cout << "This item \"" << name << " - " << description << "\" has now been added to the food menu\n";
-    } else {
+    } else if (cancel && !eof_encountered) {
         std::cout << "Option cancelled, returning to menu.\n";
     }
+
+    if (eof_encountered) {
+        exit(EXIT_SUCCESS);
+    }
 }
+
 
 
 void LinkedList::deleteFoodById() {
