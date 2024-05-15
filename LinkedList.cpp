@@ -6,18 +6,14 @@
 #include <limits>
 
 LinkedList::LinkedList() : head(nullptr), count(0) {
-    // Constructor body
-    // Initialize any needed fields, such as the head pointer and count
 }
 LinkedList::~LinkedList() {
     Node* current = head;
     while (current != nullptr) {
         Node* next = current->next;
-        delete current;  // Node's destructor will delete the FoodItem object
+        delete current;
         current = next;
     }
-
-    // Set the count to 0
     count = 0;
 }
 
@@ -64,28 +60,38 @@ void LinkedList::displayItems() const {
 
 void LinkedList::loadFoodData(const char* filename) {
     std::ifstream file(filename);
-    bool fileOpenedSuccessfully = file.is_open();
-    std::string line;
-
-    if (!fileOpenedSuccessfully) {
+    if (!file.is_open()) {
         std::cerr << "Failed to open " << filename << std::endl;
-    } else {
-        while (std::getline(file, line)) {
-        //std::cout << "Processing line: " << line << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
         std::istringstream iss(line);
-        std::string id, name, description, temp, onHandStr;
+        std::string id, name, description, priceStr, onHandStr;
         unsigned dollars = 0, cents = 0, on_hand = DEFAULT_FOOD_STOCK_LEVEL;
 
-        std::getline(iss, id, '|');
-        std::getline(iss, name, '|');
-        std::getline(iss, description, '|');
-        std::getline(iss, temp, '|');
-        dollars = std::stoi(temp.substr(0, temp.find('.')));
-        cents = std::stoi(temp.substr(temp.find('.') + 1));
-        std::getline(iss, onHandStr, '|');
-        // Parse on-hand stock if available
-        if (!onHandStr.empty()) {
-            on_hand = std::stoi(onHandStr);
+        if (!std::getline(iss, id, '|') ||
+            !std::getline(iss, name, '|') ||
+            !std::getline(iss, description, '|') ||
+            !std::getline(iss, priceStr, '|')) {
+            std::cerr << "Error parsing line, skipping: " << line << std::endl;
+        }
+
+        try {
+            size_t pos = priceStr.find('.');
+            if (pos != std::string::npos) {
+                dollars = std::stoi(priceStr.substr(0, pos));
+                cents = std::stoi(priceStr.substr(pos + 1));
+            } else {
+                throw std::invalid_argument("Invalid price format");
+            }
+
+            if (std::getline(iss, onHandStr, '|') && !onHandStr.empty()) {
+                on_hand = std::stoi(onHandStr);
+            }
+        } catch (const std::exception& e) {
+            std::cerr << "Error processing data for item: " << id << ", Error: " << e.what() << std::endl;
         }
 
         FoodItem item;
@@ -96,14 +102,10 @@ void LinkedList::loadFoodData(const char* filename) {
         item.price.cents = cents;
         item.on_hand = on_hand;
 
-        addFoodData(item);
-        //std::cout << "Added item: " << item.name << " with price $" << item.price.dollars << "." << item.price.cents << std::endl; // Test if added to system
-        }
+        addFoodData(item);  // Add the food item to the linked list
     }
 
-    // Close reading file to avoid memory leack
-    file.close();
-    
+    file.close();  // Close the file after reading
 }
 
 FoodItem* LinkedList::findItemById(const std::string& id) {
@@ -119,7 +121,6 @@ FoodItem* LinkedList::findItemById(const std::string& id) {
 
 
 void LinkedList::saveDataAndExit(const std::string& foodFilename, const std::string& coinFilename, const CoinCollection& coinsList) {
-    // Saving Food Items
     std::ofstream foodFile(foodFilename);
     Node* current = head;
     if (!foodFile) {
@@ -129,21 +130,12 @@ void LinkedList::saveDataAndExit(const std::string& foodFilename, const std::str
         foodFile << current->data->id << "|" << current->data->name << "|" << 
         current->data->description << "|" << current->data->price.dollars << "." << 
         current->data->price.cents << "|"<< current->data->on_hand  << std::endl;
-
-        // Storing the next node
         Node* nextNode = current->next;
-
-        // Deleting the current node
         delete current;
-        // Moving to the next node in the linkedList.
         current = nextNode;
     }
-
-    // Assign the head pointer to nullptr to avoid memory leack.
     head = nullptr;
     foodFile.close();
-
-    // Saving Coin Data
     std::ofstream coinFile(coinFilename);
     if (!coinFile) {
         std::cerr << "Failed to open " << coinFilename << " for writing.\n";
@@ -160,10 +152,12 @@ void LinkedList::saveDataAndExit(const std::string& foodFilename, const std::str
 }
 
 void LinkedList::createFood() {
-    std::string id, name, description, tempStrCents;
+    std::string id, name, description, price_input;
     unsigned dollars, cents;
     char dot;
+    bool cancel = false; // Boolean flag to indicate if the function should be cancelled
 
+    // Generate the next item ID
     std::ostringstream nextId;
     nextId << "F" << std::setw(4) << std::setfill('0') << (count + 1);
     id = nextId.str();
@@ -173,48 +167,68 @@ void LinkedList::createFood() {
     
     std::cout << "Enter the item name: ";
     std::getline(std::cin, name);
-    capitalizeFirstLetter(name);
+    if (name.empty()) {
+        std::cout << "Option cancelled, returning to menu.\n";
+        cancel = true;
+    } else {
+        capitalizeFirstLetter(name);
+    }
     
-    std::cout << "Enter the item description:";
-    std::getline(std::cin, description);
-    capitalizeFirstLetter(description);
-
-    bool valid_price = false;
-    while (!valid_price) {
-        std::string price_input;
-        std::cout << "Enter the price for this item (in dollars.cents format): ";
-        std::getline(std::cin, price_input);
-
-        std::istringstream iss(price_input);
-        if (!(iss >> dollars >> dot >> cents) || dot != '.' || cents >= 100 || cents % 5 != 0) {
-            std::cout << "Invalid input. Please ensure the format is correct and cents are valid denominations.\n";
-            continue;
+    if (!cancel) {
+        std::cout << "Enter the item description: ";
+        std::getline(std::cin, description);
+        if (description.empty()) {
+            std::cout << "Option cancelled, returning to menu.\n";
+            cancel = true;
+        } else {
+            capitalizeFirstLetter(description);
         }
-        valid_price = true;
     }
 
-    FoodItem item;
-    item.id = id;
-    item.name = name;
-    item.description = description;
-    item.price.dollars = dollars;
-    item.price.cents = cents;
-    item.on_hand = DEFAULT_FOOD_STOCK_LEVEL;
+    if (!cancel) {
+        bool valid_price = false;
+        std::cout << "Enter the item price (in dollars.cents format): ";
+        while (!valid_price) {
+            std::getline(std::cin, price_input);
+            std::istringstream iss(price_input);
 
-    addFoodData(item);
-
-    std::cout << "This item \"" << name << " - " << description << "\" has now been added to the food menu\n";
-}
-
-
-bool LinkedList::checkForInvalidValues(std::string name){
-    if(name.empty()){
-        std::cout << "Option cancelled, returning to menu." << std::endl;
-        return true;
+            if (!(iss >> dollars >> dot >> cents)) {
+                if (price_input.find('.') == std::string::npos) {
+                    std::cout << "Error: money is not formatted properly.\n";
+                } else {
+                    std::cout << "Error: there are not two digits for cents.\n";
+                }
+                std::cout << "Enter the item price (in dollars.cents format): ";
+            } else if (dot != '.' || cents >= 100 || !iss.eof()) {
+                std::cout << "Error: money is not formatted properly.\n";
+                std::cout << "Enter the item price (in dollars.cents format): ";
+            } else if (cents % 5 != 0) {
+                std::cout << "Error: price is not a valid denomination.\n";
+                std::cout << "Enter the item price (in dollars.cents format): ";
+            } else {
+                valid_price = true;
+            }
         }
-    else{
-        return false;
-        }
+
+    }
+
+
+    if (!cancel) {
+        FoodItem item;
+        item.id = id;
+        item.name = name;
+        item.description = description;
+        item.price.dollars = dollars;
+        item.price.cents = cents;
+        item.on_hand = DEFAULT_FOOD_STOCK_LEVEL;
+
+        addFoodData(item);
+        std::cout << "This item \"" << name << " - " << description << "\" has now been added to the food menu\n";
+    }
+
+    if (cancel) {
+        return;
+    }
 }
 
 void LinkedList::deleteFoodById() {

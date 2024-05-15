@@ -19,7 +19,6 @@ void displayMainMenu();
 void processOption(int option, LinkedList& itemList, CoinCollection& coinsList);
 void purchaseItem(LinkedList& itemList, CoinCollection& moneyList);
 bool isValidDenomination(int cents);
-void loadFoodData(const char* filename, LinkedList& itemList);
 
 
 int main(int argc, char **argv) {
