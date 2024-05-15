@@ -22,27 +22,46 @@ bool isValidDenomination(int cents);
 
 
 int main(int argc, char **argv) {
-    int option;
-    bool quit = false;
+    int option = 0;
+    bool validInput = false;
+    std::string input;
     LinkedList itemList;
     CoinCollection coinsList;
+
     itemList.loadFoodData(argv[1]);
     coinsList.loadCoinData(argv[2]);
 
     do {
         displayMainMenu();
         std::cout << "Select your option (1-7): ";
-        std::cin >> option;
-        
-        if (std::cin.fail() || std::cin.eof()) {
-            std::cin.clear();
-            quit = true;
-        }
-        else if (!quit) {
-            processOption(option, itemList, coinsList);
-        }
-    } while (option != 7 && !std::cin.eof() && !quit);
+        std::getline(std::cin, input);
 
+        if (std::cin.eof()) {
+            exit(EXIT_SUCCESS);
+        } 
+        else if (input.empty()) {
+            std::cout << "Error in input. Please try again.\n";
+            
+        } 
+        else {
+            std::stringstream ss(input);
+            if (!(ss >> option) || ss.peek() != EOF) {
+                std::cout << "Error in input. Please try again.\n";
+                std::cin.clear();
+                ss.clear();
+            } else if (option < 1 || option > 7) {
+                std::cout << "Error: number was outside of range.\n";
+            } else {
+                validInput = true;
+            }
+        }
+
+        if (validInput) {
+            processOption(option, itemList, coinsList);
+            validInput = false; // Reset for next input
+        }
+
+    } while (option != 7 && !std::cin.eof());
 }
 
 void displayMainMenu() {
@@ -74,10 +93,7 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
     } else if (option == 6) {
         coinsList.displayBalance();
     } else if (option == 7) {
-
         exit(EXIT_SUCCESS);
-    } else {
-        std::cout << "Error: number was outside of range.\n";
     }
 }
 
@@ -144,7 +160,6 @@ void purchaseItem(LinkedList& itemList, CoinCollection& coinsList) {
             }
         }
     }
-    return;
 }
 
 

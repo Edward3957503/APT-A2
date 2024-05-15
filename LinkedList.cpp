@@ -86,10 +86,6 @@ void LinkedList::loadFoodData(const char* filename) {
             } else {
                 throw std::invalid_argument("Invalid price format");
             }
-
-            if (std::getline(iss, onHandStr, '|') && !onHandStr.empty()) {
-                on_hand = std::stoi(onHandStr);
-            }
         } catch (const std::exception& e) {
             std::cerr << "Error processing data for item: " << id << ", Error: " << e.what() << std::endl;
         }
@@ -102,10 +98,10 @@ void LinkedList::loadFoodData(const char* filename) {
         item.price.cents = cents;
         item.on_hand = on_hand;
 
-        addFoodData(item);  // Add the food item to the linked list
+        addFoodData(item);
     }
 
-    file.close();  // Close the file after reading
+    file.close();
 }
 
 FoodItem* LinkedList::findItemById(const std::string& id) {
@@ -129,7 +125,7 @@ void LinkedList::saveDataAndExit(const std::string& foodFilename, const std::str
     while (current != nullptr) {
         foodFile << current->data->id << "|" << current->data->name << "|" << 
         current->data->description << "|" << current->data->price.dollars << "." << 
-        current->data->price.cents << "|"<< current->data->on_hand  << std::endl;
+        current->data->price.cents << std::endl;
         Node* nextNode = current->next;
         delete current;
         current = nextNode;
@@ -155,7 +151,7 @@ void LinkedList::createFood() {
     std::string id, name, description, price_input;
     unsigned dollars, cents;
     char dot;
-    bool cancel = false; // Boolean flag to indicate if the function should be cancelled
+    bool cancel = false;
 
     // Generate the next item ID
     std::ostringstream nextId;
@@ -167,8 +163,10 @@ void LinkedList::createFood() {
     
     std::cout << "Enter the item name: ";
     std::getline(std::cin, name);
+    if (std::cin.eof()) {
+        exit(EXIT_SUCCESS);
+    }
     if (name.empty()) {
-        std::cout << "Option cancelled, returning to menu.\n";
         cancel = true;
     } else {
         capitalizeFirstLetter(name);
@@ -177,8 +175,10 @@ void LinkedList::createFood() {
     if (!cancel) {
         std::cout << "Enter the item description: ";
         std::getline(std::cin, description);
+        if (std::cin.eof()) {
+            exit(EXIT_SUCCESS);
+        }
         if (description.empty()) {
-            std::cout << "Option cancelled, returning to menu.\n";
             cancel = true;
         } else {
             capitalizeFirstLetter(description);
@@ -187,31 +187,36 @@ void LinkedList::createFood() {
 
     if (!cancel) {
         bool valid_price = false;
-        std::cout << "Enter the item price (in dollars.cents format): ";
-        while (!valid_price) {
+        std::cout << "Enter the item price (in cents format): ";
+        while (!valid_price && !cancel) {
             std::getline(std::cin, price_input);
-            std::istringstream iss(price_input);
-
-            if (!(iss >> dollars >> dot >> cents)) {
-                if (price_input.find('.') == std::string::npos) {
+            if (std::cin.eof()) {
+                exit(EXIT_SUCCESS);
+            }
+            if (price_input.empty()) {
+                cancel = true;
+            }
+            else {
+                std::istringstream iss(price_input);
+                if (!(iss >> dollars >> dot >> cents)) {
+                    if (price_input.find('.') == std::string::npos) {
+                        std::cout << "Error: money is not formatted properly.\n";
+                    } else {
+                        std::cout << "Error: there are not two digits for cents.\n";
+                    }
+                    std::cout << "Enter the item price (in dollars.cents format): ";
+                } else if (dot != '.' || cents >= 100 || !iss.eof()) {
                     std::cout << "Error: money is not formatted properly.\n";
+                    std::cout << "Enter the item price (in dollars.cents format): ";
+                } else if (cents % 5 != 0) {
+                    std::cout << "Error: price is not a valid denomination.\n";
+                    std::cout << "Enter the item price (in dollars.cents format): ";
                 } else {
-                    std::cout << "Error: there are not two digits for cents.\n";
+                    valid_price = true;
                 }
-                std::cout << "Enter the item price (in dollars.cents format): ";
-            } else if (dot != '.' || cents >= 100 || !iss.eof()) {
-                std::cout << "Error: money is not formatted properly.\n";
-                std::cout << "Enter the item price (in dollars.cents format): ";
-            } else if (cents % 5 != 0) {
-                std::cout << "Error: price is not a valid denomination.\n";
-                std::cout << "Enter the item price (in dollars.cents format): ";
-            } else {
-                valid_price = true;
             }
         }
-
     }
-
 
     if (!cancel) {
         FoodItem item;
@@ -224,12 +229,11 @@ void LinkedList::createFood() {
 
         addFoodData(item);
         std::cout << "This item \"" << name << " - " << description << "\" has now been added to the food menu\n";
-    }
-
-    if (cancel) {
-        return;
+    } else {
+        std::cout << "Option cancelled, returning to menu.\n";
     }
 }
+
 
 void LinkedList::deleteFoodById() {
     Node* current = head;
