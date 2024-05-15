@@ -26,13 +26,15 @@ void LinkedList::addFoodData(const FoodItem& item) {
     newNode->data = new FoodItem(item);
     newNode->next = nullptr;
 
-    if (head == nullptr) {
-        head = newNode; 
+    if (head == nullptr || head->data->name.compare(item.name) > 0) {
+        newNode->next = head;
+        head = newNode;
     } else {
         Node* current = head;
-        while (current->next != nullptr) {
+        while (current->next != nullptr && current->next->data->name.compare(item.name) < 0) {
             current = current->next;
         }
+        newNode->next = current->next;
         current->next = newNode;
     }
     count++;
@@ -157,70 +159,53 @@ void LinkedList::saveDataAndExit(const std::string& foodFilename, const std::str
     exit(EXIT_SUCCESS);
 }
 
-
-void LinkedList::createFood(){
+void LinkedList::createFood() {
     std::string id, name, description, tempStrCents;
     unsigned dollars, cents;
     char dot;
 
-    // Determine the next available food item id
     std::ostringstream nextId;
     nextId << "F" << std::setw(4) << std::setfill('0') << (count + 1);
-    // set width to 4 
-    // make sure there is always 4 numbers after 'F' = 5 characters long
-    // current number of food(count) + 1
-    id = nextId.str(); // convert stream to string 
+    id = nextId.str();
 
-    // Prompt the user for food details
     std::cout << "This new meal item will have the Item id of " << id << "." << std::endl;
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // ignore line from input 4 (ftt.cpp)
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     
     std::cout << "Enter the item name: ";
     std::getline(std::cin, name);
-    if(checkForInvalidValues(name) == true){return;}
+    capitalizeFirstLetter(name);
     
     std::cout << "Enter the item description:";
     std::getline(std::cin, description);
-    if(checkForInvalidValues(description) == true){return;}
+    capitalizeFirstLetter(description);
 
     bool valid_price = false;
-    while (!valid_price) { // check for valid input
+    while (!valid_price) {
         std::string price_input;
         std::cout << "Enter the price for this item (in dollars.cents format): ";
-        std::getline(std::cin, price_input); 
-        if(checkForInvalidValues(price_input) == true){return;} // invalid values returns to main menu
+        std::getline(std::cin, price_input);
 
-        std::istringstream iss(price_input); 
-
-        iss >> dollars >> dot >> cents;
-        tempStrCents = std::to_string(cents); // to check if there are 2 numbers after dot 
-
-        if (dollars && dot == '.' && (cents < 100 && cents % 5 == 0) && tempStrCents.size() == 2) { 
-            valid_price = true;
+        std::istringstream iss(price_input);
+        if (!(iss >> dollars >> dot >> cents) || dot != '.' || cents >= 100 || cents % 5 != 0) {
+            std::cout << "Invalid input. Please ensure the format is correct and cents are valid denominations.\n";
+            continue;
         }
-        else if (price_input.find('.') == std::string::npos){
-            std::cout << "Error: money is not formatted properly" << std::endl;
-        }
-        else if(!(tempStrCents.size() == 2)){
-            std::cout << "Error: there are not two digits for cents." << std::endl;
-        }
-        else if(cents % 5 != 0){
-            std::cout << "Error: price is not a valid denomination." << std::endl;
-        }
+        valid_price = true;
     }
-    // add the food item to the program
+
     FoodItem item;
     item.id = id;
     item.name = name;
     item.description = description;
     item.price.dollars = dollars;
     item.price.cents = cents;
-    item.on_hand = DEFAULT_FOOD_STOCK_LEVEL; // Set value to 20
+    item.on_hand = DEFAULT_FOOD_STOCK_LEVEL;
 
     addFoodData(item);
 
-    std::cout << "This item \"" << name << " - " << description << ".\" has now been added to the food menu" << std::endl;
+    std::cout << "This item \"" << name << " - " << description << "\" has now been added to the food menu\n";
 }
+
 
 bool LinkedList::checkForInvalidValues(std::string name){
     if(name.empty()){
@@ -280,3 +265,10 @@ void LinkedList::deleteFoodById() {
         
     } 
 }
+
+void LinkedList::capitalizeFirstLetter(std::string& str) {
+    if (!str.empty() && std::islower(str[0])) {
+        str[0] = std::toupper(str[0]);
+    }
+}
+

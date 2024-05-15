@@ -15,6 +15,7 @@ public:
     FoodItem* findItemById(const std::string& id);
     void createFood();
     bool checkForInvalidValues(std::string);
+    void capitalizeFirstLetter(std::string& str);
 
     /*
         * Save Data and Exit:
