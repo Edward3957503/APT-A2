@@ -241,7 +241,6 @@ void LinkedList::deleteFoodById() {
     bool quit = false;
     std::string id = "";
     std::cout << "Enter the food id of the food to remove from the menu: ";
-    // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     if (!std::getline(std::cin, id) || id.empty() || std::cin.eof()){
         quit = true;
