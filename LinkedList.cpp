@@ -240,7 +240,7 @@ void LinkedList::deleteFoodById() {
     Node* prev = nullptr;
     bool quit = false;
     std::string id = "";
-    std::cout << "Enter the food id of the food to remove from the menu: ";
+    std::cout << "Please enter the ID of the food to remove from the menu: ";
 
     if (!std::getline(std::cin, id) || id.empty() || std::cin.eof()){
         quit = true;
