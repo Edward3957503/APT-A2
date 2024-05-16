@@ -66,15 +66,16 @@ int main(int argc, char **argv) {
 }
 
 void displayMainMenu() {
+    std::string whitespace = "   ";
     std::cout << "\nMain Menu:\n";
-    std::cout << "1. Display Items\n";
-    std::cout << "2. Purchase Items\n";
-    std::cout << "3. Save and Exit\n";
+    std::cout << whitespace << "1. Display Meal Options\n";
+    std::cout << whitespace << "2. Purchase Meal\n";
+    std::cout << whitespace << "3. Save and Exit\n";
     std::cout << "Administrator-Only Menu:\n";
-    std::cout << "4. Add Food\n";
-    std::cout << "5. Remove Food\n";
-    std::cout << "6. Display Balance\n";
-    std::cout << "7. Abort\n";
+    std::cout << whitespace << "4. Add Food\n";
+    std::cout << whitespace << "5. Remove Food\n";
+    std::cout << whitespace << "6. Display Balance\n";
+    std::cout << whitespace << "7. Abort Program\n";
 
 }
 
