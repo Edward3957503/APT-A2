@@ -133,3 +133,8 @@ void CoinCollection::displayBalance() {
     std::cout << std::setw(20) << "$" << "  " << total << std::endl;
 }
 
+void CoinCollection::setAllCoinsToZero() {
+    for (auto& coin : coins) {
+        coin.count = 0;
+    }
+}

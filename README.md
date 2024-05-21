@@ -37,6 +37,16 @@ The Vending Machine System is a console-based application designed to facilitate
 
 
 ## Test Cases
-1. addFood_SE - Creates a new food and save and exit --> SHOULD APPEAR IN foods.dat
-2. coinBalance_SE - Purchase for food and save and exit --> Check if coin quantity changes in coins.dat
-3. removeFood_SE - Removes food and save and exit --> Check in foods.dat if food item is no longer there 
+1. test-1 : Testing invalid inputs on main menu.
+2. test-2 : Testing invalid inputs on purchase menu.
+3. test-3 : Testing cancellation in 'add food' and invalid inputs menu on each stage.
+4. test-4 : Testing what happens when the all food stock is 0 and a customer wants to purchase an item.
+   Note : Uses 123441 as an input to make the food stock to 0.
+5. test-5 : Testing what happens when the all the coin stock is 0 and a customer wants to purchase an item.
+   Note : Uses 123442 as an input to make the coin stock to 0.
+6. test-6 : Testing what happens when foods.dat has an invalid format.
+   Note : This will need modification on the foods.dat file where someone puts a random '|' seperator somewhere in the middle, which could make `loadFoodData` function read an invalid data type.
+7. test-7 : Testing invalid inputs on remove food menu.
+8. test-8 : Create a new food and save and exit --> SHOULD APPEAR IN foods.dat
+9. test-9 : Purchase for food and save and exit --> Check if coin quantity changes in coins.dat
+3. test-10 : Remove food and save and exit --> Check in foods.dat if food item is no longer there 

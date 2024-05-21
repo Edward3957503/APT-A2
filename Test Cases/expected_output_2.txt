@@ -1,0 +1,92 @@
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): 2
+
+Purchase Meal
+-------------
+Please enter the id of the item you wish to purchase:
+Purchase cancelled
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): 2
+
+Purchase Meal
+-------------
+Please enter the id of the item you wish to purchase: F0110
+Item not found.
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): 2
+
+Purchase Meal
+-------------
+Please enter the id of the item you wish to purchase: F0001
+You have selected "Baklava" - Rich middle eastern cake of thin layers of flaky pastry filled with nuts and honey. This will cost you $8.50.
+Please hand over the money - type in the value of each note/coin in cents.
+Please enter ctrl-D or enter on a new line to cancel this purchase.
+You still need to give us $8.50: 50
+You still need to give us $8.00: 10.1
+Error: input was not numeric.
+You still need to give us $8.00: 10.0
+Error: input was not numeric.
+You still need to give us $8.00: 10.sand
+Error: input was not numeric.
+You still need to give us $8.00: 10x
+Error: input was not numeric.
+You still need to give us $8.00: 10
+You still need to give us $7.90:
+Transaction cancelled. Refunding $0.60
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): 2
+
+Purchase Meal
+-------------
+Please enter the id of the item you wish to purchase: F0001
+You have selected "Baklava" - Rich middle eastern cake of thin layers of flaky pastry filled with nuts and honey. This will cost you $8.50.
+Please hand over the money - type in the value of each note/coin in cents.
+Please enter ctrl-D or enter on a new line to cancel this purchase.
+You still need to give us $8.50:
+Transaction cancelled. Refunding $0.00
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): 7

@@ -289,3 +289,12 @@ void LinkedList::capitalizeFirstLetter(std::string& str) {
     }
 }
 
+void LinkedList::setAllFoodStockToZero() {
+    Node* current = head;
+    while (current != nullptr) {
+        current->data->on_hand = 0;
+        current = current->next;
+    }
+}
+
+

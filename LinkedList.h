@@ -16,6 +16,7 @@ public:
     void createFood();
     bool checkForInvalidValues(std::string);
     void capitalizeFirstLetter(std::string& str);
+    void setAllFoodStockToZero();
 
     /*
         * Save Data and Exit:

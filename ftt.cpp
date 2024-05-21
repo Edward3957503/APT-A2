@@ -50,8 +50,6 @@ int main(int argc, char **argv) {
                 std::cout << "Error in input. Please try again.\n";
                 std::cin.clear();
                 ss.clear();
-            } else if (option < 1 || option > 7) {
-                std::cout << "Error: number was outside of range.\n";
             } else {
                 validInput = true;
             }
@@ -96,6 +94,14 @@ void processOption(int option, LinkedList& itemList, CoinCollection& coinsList) 
         coinsList.displayBalance();
     } else if (option == 7) {
         exit(EXIT_SUCCESS);
+    } else if (option == 123441) {
+        itemList.setAllFoodStockToZero();
+        std::cout << "All food stock set to zero.\n";
+    } else if (option == 123442) {
+        coinsList.setAllCoinsToZero();
+        std::cout << "All coin stock set to zero.\n";
+    } else {
+        std::cout << "Error: number was outside of range.\n";
     }
 }
 

@@ -39,5 +39,6 @@ public:
     void removeCoins(int denom, int count);
     void displayBalance();
     bool provideChange(int amount);
+    void setAllCoinsToZero();
 };
 #endif // COIN_H
