@@ -122,8 +122,8 @@ void CoinCollection::displayBalance() {
 
         // Print the (coin type) | (amount) | (total value)
         std::cout << std::setw(5) << denomination << " | "
-                  << std::setw(8) << count << " | $"
-                  << std::setw(8) << std::fixed << std::setprecision(2) << value << std::endl;
+                  << std::setw(8) << count << " | $ "
+                  << std::setw(7) << std::fixed << std::setprecision(2) << value << std::endl;
 }
     for(int i=0; i < 28; ++i){
         std::cout << "-";

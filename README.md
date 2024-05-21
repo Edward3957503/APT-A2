@@ -36,3 +36,7 @@ The Vending Machine System is a console-based application designed to facilitate
 7. Abort: Exit out of the program. 
 
 
+## Test Cases
+1. addFood_SE - Creates a new food and save and exit --> SHOULD APPEAR IN foods.dat
+2. coinBalance_SE - Purchase for food and save and exit --> Check if coin quantity changes in coins.dat
+3. removeFood_SE - Removes food and save and exit --> Check in foods.dat if food item is no longer there 
