@@ -251,10 +251,10 @@ void LinkedList::deleteFoodById() {
         delete current;
         quit = true;
     }    
-
+    bool found = false;
     while (current != nullptr && !quit) {
         if (current->data->id == id) {
-            std::cout << "“" << id << " - " << current->data->name << " - " << current->data->description << "”"<< " has been removed from the system." << std::endl;
+            std::cout << "\"" << id << " - " << current->data->name << " - " << current->data->description << "\" has been removed from the system.\n";
             if (prev == nullptr) {
                 // If the node to delete is the head
                 head = current->next;
@@ -272,15 +272,15 @@ void LinkedList::deleteFoodById() {
             current = temp;
             // Set the quit to true.
             quit = true;
+            found = true;
         }
-        else if (current->data->id != id) {
+            prev = current;
+            current = current->next;
+    } 
+    if (!found) {
             std::cout << "Food with id (" << id << ") was not found." << std::endl;
             quit = true;
-        }
-        prev = current;
-        current = current->next;
-        
-    } 
+    }
 }
 
 void LinkedList::capitalizeFirstLetter(std::string& str) {
