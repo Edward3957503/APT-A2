@@ -1,0 +1,56 @@
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): 
+Purchase Meal
+-------------
+Please enter the id of the item you wish to purchase: You have selected "Bibimbab" - Spicy Korean rice dish with vegetables, bean paste and beef. This will cost you $15.80.
+Please hand over the money - type in the value of each note/coin in cents.
+Please enter ctrl-D or enter on a new line to cancel this purchase.
+You still need to give us $15.80: Your change is: 10c 10c $2 $2 
+Here is your Bibimbab. Thank you!
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): 
+Balance Summary
+-------------
+Denom | Quantity | Value
+----------------------------
+    5 |       20 | $    1.00
+   10 |       34 | $    3.40
+   20 |        0 | $    0.00
+   50 |        5 | $    2.50
+  100 |       30 | $   30.00
+  200 |        8 | $   16.00
+  500 |        6 | $   30.00
+ 1000 |       10 | $  100.00
+ 2000 |       16 | $  320.00
+ 5000 |       10 | $  500.00
+----------------------------
+                   $  1002.90
+
+Main Menu:
+   1. Display Meal Options
+   2. Purchase Meal
+   3. Save and Exit
+Administrator-Only Menu:
+   4. Add Food
+   5. Remove Food
+   6. Display Balance
+   7. Abort Program
+Select your option (1-7): All data saved successfully. Exiting program.
