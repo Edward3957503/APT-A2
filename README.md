@@ -67,4 +67,8 @@ The Vending Machine System is a console-based application designed to facilitate
 10. **removeFoodSE:** Remove food, save, and exit. Check if the food item is no longer present in `foods.dat`.
 
 ---
-
+##GitHub Link
+```sh
+https://github.com/Edward3957503/APT-A2
+```
+---
