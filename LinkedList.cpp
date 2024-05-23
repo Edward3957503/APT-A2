@@ -5,37 +5,44 @@
 #include <fstream>
 #include <limits>
 
+// Constructor to initialize the linked list
 LinkedList::LinkedList() : head(nullptr), count(0) {
 }
+
+// Destructor to clean up memory used by the linked list
 LinkedList::~LinkedList() {
     Node* current = head;
     while (current != nullptr) {
         Node* next = current->next;
-        delete current;
+        delete current; // Delete the current node
         current = next;
     }
-    count = 0;
+    count = 0; // Reset the count to 0
 }
 
+// Function to add food data to the linked list, maintaining alphabetical order by name
 void LinkedList::addFoodData(const FoodItem& item) {
     Node* newNode = new Node();
     newNode->data = new FoodItem(item);
     newNode->next = nullptr;
 
+    // If the list is empty or the new item's name is alphabetically before the head
     if (head == nullptr || head->data->name.compare(item.name) > 0) {
         newNode->next = head;
         head = newNode;
     } else {
         Node* current = head;
+        // Traverse the list to find the correct position
         while (current->next != nullptr && current->next->data->name.compare(item.name) < 0) {
             current = current->next;
         }
         newNode->next = current->next;
         current->next = newNode;
     }
-    count++;
+    count++; // Increment the count of nodes
 }
 
+// Function to display all items in the linked list
 void LinkedList::displayItems() const {
     std::cout << "\nFood Menu\n";
     std::cout << std::string(9, '-') << std::endl;
@@ -43,9 +50,10 @@ void LinkedList::displayItems() const {
     if (current != nullptr) {
         std::cout << std::left << std::setw(6) << "ID" << "|"
                   << std::setw(49) << "Name" << "|"
-                  << "Length" << std::endl;
+                  << "Price" << std::endl;
         std::cout << std::string(66, '-') << std::endl;
 
+        // Traverse the list and print each item's details
         while (current != nullptr) {
             FoodItem* item = current->data;
             std::cout << std::left << std::setw(6) << item->id << "|"
@@ -58,6 +66,7 @@ void LinkedList::displayItems() const {
     }
 }
 
+// Function to load food data from a file
 void LinkedList::loadFoodData(const char* filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -98,55 +107,62 @@ void LinkedList::loadFoodData(const char* filename) {
         item.price.cents = cents;
         item.on_hand = on_hand;
 
-        addFoodData(item);
+        addFoodData(item); // Add the item to the linked list
     }
 
-    file.close();
+    file.close(); // Close the file
 }
 
+// Function to find an item by its ID
 FoodItem* LinkedList::findItemById(const std::string& id) {
     Node* current = head;
-    while (current != nullptr) {
+    FoodItem* result = nullptr;
+
+    // Traverse the list to find the item with the given ID
+    while (current != nullptr && result == nullptr) {
         if (current->data->id == id) {
-            return current->data;
+            result = current->data;
         }
         current = current->next;
     }
-    return nullptr;
+
+    return result;
 }
 
-
+// Function to save data and exit the program
 void LinkedList::saveDataAndExit(const std::string& foodFilename, const std::string& coinFilename, const CoinCollection& coinsList) {
     std::ofstream foodFile(foodFilename);
     Node* current = head;
     if (!foodFile) {
         throw std::runtime_error("Failed to create expected_output.dat file.");
     }
+    // Write each food item to the file
     while (current != nullptr) {
-        foodFile << current->data->id << "|" << current->data->name << "|" << 
-        current->data->description << "|" << current->data->price.dollars << "." << 
-        current->data->price.cents << std::endl;
+        foodFile << current->data->id << "|" << current->data->name << "|"
+                 << current->data->description << "|" << current->data->price.dollars << "."
+                 << current->data->price.cents << std::endl;
         Node* nextNode = current->next;
         delete current;
         current = nextNode;
     }
-    head = nullptr;
-    foodFile.close();
+    head = nullptr; // Reset the head pointer
+    foodFile.close(); // Close the food data file
+
+    // Save coin data
     std::ofstream coinFile(coinFilename);
     if (!coinFile) {
         std::cerr << "Failed to open " << coinFilename << " for writing.\n";
-    }
-    else {
+    } else {
         for (const auto& coin : coinsList.coins) {
             coinFile << static_cast<int>(coin.denom) << "," << coin.count << "\n";
         }
         coinFile.close();
-
         std::cout << "All data saved successfully. Exiting program.\n";
     }
-    exit(EXIT_SUCCESS);
+    exit(EXIT_SUCCESS); // Exit the program
 }
 
+// Function to create a new food item
 void LinkedList::createFood() {
     std::string id, name, description, price_input;
     unsigned dollars, cents;
@@ -161,20 +177,18 @@ void LinkedList::createFood() {
     std::getline(std::cin, name);
     if (std::cin.eof()) {
         eof_encountered = true;
-    }
-    else if (name.empty()) {
+    } else if (name.empty()) {
         cancel = true;
     } else {
         capitalizeFirstLetter(name);
     }
-    
+
     if (!cancel && !eof_encountered) {
         std::cout << "Enter the item description: ";
         std::getline(std::cin, description);
         if (std::cin.eof()) {
             eof_encountered = true;
-        }
-        else if (description.empty()) {
+        } else if (description.empty()) {
             cancel = true;
         } else {
             capitalizeFirstLetter(description);
@@ -222,19 +236,18 @@ void LinkedList::createFood() {
         item.price.cents = cents;
         item.on_hand = DEFAULT_FOOD_STOCK_LEVEL;
 
-        addFoodData(item);
+        addFoodData(item); // Add the new item to the linked list
         std::cout << "This item \"" << name << " - " << description << "\" has now been added to the food menu\n";
     } else if (cancel && !eof_encountered) {
         std::cout << "Option cancelled, returning to menu.\n";
     }
 
     if (eof_encountered) {
-        exit(EXIT_SUCCESS);
+        exit(EXIT_SUCCESS); // Exit if EOF is encountered
     }
 }
 
-
-
+// Function to delete a food item by its ID
 void LinkedList::deleteFoodById() {
     Node* current = head;
     Node* prev = nullptr;
@@ -242,15 +255,15 @@ void LinkedList::deleteFoodById() {
     std::string id = "";
     std::cout << "Please enter the ID of the food to remove from the menu: ";
 
-    if (!std::getline(std::cin, id) || id.empty() || std::cin.eof()){
+    if (!std::getline(std::cin, id) || id.empty() || std::cin.eof()) {
         quit = true;
     }
 
-    if(current == nullptr && !quit) {
-        std::cout << "Food list is emtpy. Food with (" << id << ") cannot be found." << std::endl;
+    if (current == nullptr && !quit) {
+        std::cout << "Food list is empty. Food with (" << id << ") cannot be found." << std::endl;
         delete current;
         quit = true;
-    }    
+    }
     bool found = false;
     while (current != nullptr && !quit) {
         if (current->data->id == id) {
@@ -258,37 +271,39 @@ void LinkedList::deleteFoodById() {
             if (prev == nullptr) {
                 // If the node to delete is the head
                 head = current->next;
-            } 
-            else {
+            } else {
                 prev->next = current->next;
             }
-            
-            // Creating a temprary node to store the current.next;
+
+            // Create a temporary node to store the current.next;
             Node* temp = current->next;
-            // Deleting the current node;
+            // Delete the current node;
             delete current;
-            
-            // assigning the current node to temp node.
+            // Assign the current node to temp node.
             current = temp;
-            // Set the quit to true.
+            // Set quit to true.
             quit = true;
             found = true;
         }
+        if (!found) {
             prev = current;
             current = current->next;
-    } 
+        }
+    }
     if (!found && !quit) {
-            std::cout << "Food with id (" << id << ") was not found." << std::endl;
-            quit = true;
+        std::cout << "Food with id (" << id << ") was not found." << std::endl;
+        quit = true;
     }
 }
 
+// Function to capitalize the first letter of a string
 void LinkedList::capitalizeFirstLetter(std::string& str) {
     if (!str.empty() && std::islower(str[0])) {
         str[0] = std::toupper(str[0]);
     }
 }
 
+// Function to set the stock of all food items to zero
 void LinkedList::setAllFoodStockToZero() {
     Node* current = head;
     while (current != nullptr) {
@@ -296,5 +311,3 @@ void LinkedList::setAllFoodStockToZero() {
         current = current->next;
     }
 }
-
-
