@@ -277,7 +277,7 @@ void LinkedList::deleteFoodById() {
             prev = current;
             current = current->next;
     } 
-    if (!found) {
+    if (!found && !quit) {
             std::cout << "Food with id (" << id << ") was not found." << std::endl;
             quit = true;
     }
