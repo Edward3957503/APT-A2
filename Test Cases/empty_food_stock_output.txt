@@ -8,7 +8,7 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): 123441
+Select your option (1-7): 
 All food stock set to zero.
 
 Main Menu:
@@ -20,19 +20,19 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): 1
+Select your option (1-7):
 
 Food Menu
 ---------
 ID    |Name                                             |Length
 ------------------------------------------------------------------
-F0001 |Baklava                                          |$8.50
-F0005 |Bibimbab                                         |$15.80
-F0006 |Fondue                                           |$31.50
-F0002 |Gnocchi                                          |$12.50
-F0003 |Haggis                                           |$18.70
-F0004 |Jambalaya                                        |$23.00
-F0007 |Kelewele                                         |$11.50
+F0001 |Baklava                                          |$8.50  
+F0005 |Bibimbab                                         |$15.80 
+F0006 |Fondue                                           |$31.50 
+F0002 |Gnocchi                                          |$12.50 
+F0003 |Haggis                                           |$18.70 
+F0004 |Jambalaya                                        |$23.00 
+F0007 |Kelewele                                         |$11.50 
 
 Main Menu:
    1. Display Meal Options
@@ -43,11 +43,11 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): 2
+Select your option (1-7):
 
 Purchase Meal
 -------------
-Please enter the id of the item you wish to purchase: F0001
+Please enter the id of the item you wish to purchase: 
 Item out of stock.
 
 Main Menu:
@@ -59,11 +59,11 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): 2
+Select your option (1-7): 
 
 Purchase Meal
 -------------
-Please enter the id of the item you wish to purchase: F0002
+Please enter the id of the item you wish to purchase: 
 Item out of stock.
 
 Main Menu:
@@ -75,11 +75,11 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): 2
+Select your option (1-7):
 
 Purchase Meal
 -------------
-Please enter the id of the item you wish to purchase: F0006
+Please enter the id of the item you wish to purchase: 
 Item out of stock.
 
 Main Menu:
@@ -91,4 +91,4 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): 7
+Select your option (1-7): 
