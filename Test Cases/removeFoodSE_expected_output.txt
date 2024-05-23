@@ -8,7 +8,7 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): Please enter the ID of the food to remove from the menu: Food with id (F0006) was not found.
+Select your option (1-7): Please enter the ID of the food to remove from the menu: "F0006 - Fondue - European dish of assorted melted cheeses. Served with bread for dipping" has been removed from the system.
 
 Main Menu:
    1. Display Meal Options
@@ -22,11 +22,10 @@ Administrator-Only Menu:
 Select your option (1-7): 
 Food Menu
 ---------
-ID    |Name                                             |Length
+ID    |Name                                             |Price
 ------------------------------------------------------------------
 F0001 |Baklava                                          |$8.50  
 F0005 |Bibimbab                                         |$15.80 
-F0006 |Fondue                                           |$31.50 
 F0002 |Gnocchi                                          |$12.50 
 F0003 |Haggis                                           |$18.70 
 F0004 |Jambalaya                                        |$23.00 
