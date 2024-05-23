@@ -8,7 +8,7 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): 1
+Select your option (1-7): 
 
 Food Menu
 ---------
@@ -31,7 +31,7 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): 10
+Select your option (1-7): 
 Error: number was outside of range.
 
 Main Menu:
@@ -43,7 +43,7 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): -1
+Select your option (1-7): 
 Error: number was outside of range.
 
 Main Menu:
@@ -55,7 +55,7 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): test
+Select your option (1-7): 
 Error in input. Please try again.
 
 Main Menu:
@@ -79,7 +79,7 @@ Administrator-Only Menu:
    5. Remove Food
    6. Display Balance
    7. Abort Program
-Select your option (1-7): jmdf39021=mf
+Select your option (1-7): 
 Error in input. Please try again.
 
 Main Menu:

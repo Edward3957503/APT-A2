@@ -1,3 +1,0 @@
-1
-7
-#set put a random | in pasta
